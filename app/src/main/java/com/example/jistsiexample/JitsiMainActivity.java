@@ -2,6 +2,7 @@ package com.example.jistsiexample;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,7 +13,7 @@ import org.jitsi.meet.sdk.JitsiMeetUserInfo;
 
 import java.net.URL;
 
-public class MainActivity extends AppCompatActivity {
+public class JitsiMainActivity extends AppCompatActivity {
 
     String url = "https://meet.jit.si";
     EditText username, room_name;
@@ -29,24 +30,24 @@ public class MainActivity extends AppCompatActivity {
         start_meeting = findViewById(R.id.start_meeting);
         start_meeting.setOnClickListener(v -> {
             try {
-                startMeeting();
+                //startMeeting();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
     }
 
-    private void startMeeting() throws Exception {
+    public static void startMeeting(Context context, String url, String username, String room_name) throws Exception {
 
         JitsiMeetUserInfo jitsiMeetUserInfo = new JitsiMeetUserInfo();
-        jitsiMeetUserInfo.setDisplayName(username.getText().toString());
+        jitsiMeetUserInfo.setDisplayName(username);
         jitsiMeetUserInfo.setEmail("vishnu@simplecrm.com");
 
         JitsiMeetConferenceOptions options = new JitsiMeetConferenceOptions.Builder()
                 .setServerURL(new URL(url))
                 .setAudioMuted(false)
                 .setAudioOnly(false)
-                .setRoom(room_name.getText().toString())
+                .setRoom(room_name)
                 .setVideoMuted(false)
                 .setUserInfo(jitsiMeetUserInfo)
                 .setFeatureFlag("toolbox.enabled", true)
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 .setWelcomePageEnabled(false)
                 .build();
 
-        JitsiMeetActivity.launch(this, options);
+        JitsiMeetActivity.launch(context, options);
         //JitsiMeet.setDefaultConferenceOptions(defaultOptions);
     }
 }
